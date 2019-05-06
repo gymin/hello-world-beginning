@@ -1,0 +1,154 @@
+import tweepy
+from tweepy import OAuthHandler
+import json
+from timeit import default_timer as timer
+
+# Query Twitter API for each tweet in the Twitter archive and save JSON in a text file
+# These are hidden to comply with Twitter's API terms and conditions
+consumer_key = 'HIDDEN'
+consumer_secret = 'HIDDEN'
+access_token = 'HIDDEN'
+access_secret = 'HIDDEN'
+
+auth = OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_secret)
+
+api = tweepy.API(auth, wait_on_rate_limit=True)
+
+# NOTE TO STUDENT WITH MOBILE VERIFICATION ISSUES:
+# df_1 is a DataFrame with the twitter_archive_enhanced.csv file. You may have to
+# change line 17 to match the name of your DataFrame with twitter_archive_enhanced.csv
+# NOTE TO REVIEWER: this student had mobile verification issues so the following
+# Twitter API code was sent to this student from a Udacity instructor
+# Tweet IDs for which to gather additional data via Twitter's API
+tweet_ids = df_1.tweet_id.values
+len(tweet_ids)
+
+# Query Twitter's API for JSON data for each tweet ID in the Twitter archive
+count = 0
+fails_dict = {}
+start = timer()
+# Save each tweet's returned JSON as a new line in a .txt file
+with open('tweet_json.txt', 'w') as outfile:
+    # This loop will likely take 20-30 minutes to run because of Twitter's rate limit
+    for tweet_id in tweet_ids:
+        count += 1
+        print(str(count) + ": " + str(tweet_id))
+        try:
+            tweet = api.get_status(tweet_id, tweet_mode='extended')
+            print("Success")
+            json.dump(tweet._json, outfile)
+            outfile.write('\n')
+        except tweepy.TweepError as e:
+            print("Fail")
+            fails_dict[tweet_id] = e
+            pass
+end = timer()
+print(end - start)
+print(fails_dict)
+
+
+# to read the .txt file to dataframe by line
+# worked one (the below one gives dataframe with full details)
+pd.read_json("tweet_json.txt", lines=True) 
+# to create a dataframe with selected information 
+#load the json data and store it in a list
+data = []
+with open('tweet-json.txt') as f:    
+        for line in f:         
+             data.append(json.loads(line))
+#create dataframe from json data
+df_api = pd.DataFrame(data)
+#select columns of interest
+columns_of_interest = ['id', 'retweet_count', 'favorite_count']
+df_api = df_api[columns_of_interest]
+
+# the below ones are other suggestions, but didn't really work 
+with open('tweet_json.txt', 'r') as file:
+    test = json.load(file[0])
+
+with open('tweet_json.txt') as file:
+dat = json.load(file) 
+
+# Try reading line-by-line
+with open('tweet_json.txt') as f:
+    for line in f:
+        status  = json.loads(line)
+
+df_clean['good_dog_stage'].value_counts()
+# the answer should included NoneNoneNoneNone 1976
+
+# Merging the image prediction and tweet json table (but makes sure 'tweet_id' is an int(int64) or str? 
+combined_df = pd.merge(image_predictions_copy, tweets_df_copy, how = 'inner', on='tweet_id')
+
+df_temp_clean = pd.merge(df_twitter_archive_enhanced_clean, df_tweet_json_clean, on='tweet_id', how='inner')
+df_master_clean = pd.merge(df_temp_clean, df_image_predictions_clean, on='tweet_id', how='inner')
+
+# to get image predictions using requests
+import os
+import requests
+url = 'address provided'
+response = reqeusts.get(url)
+with open("image_predictions.tsv", mode = 'wb') as outfile:
+outfile.write(response.content)
+# OR
+with open(os.path.join("", URL.split('/')[-1]), mode = 'wb') as file: 
+file.write(response.content)
+# then read the downloaded file into a dataframe 'images'
+images = pd.read_csv('image-predictions.tsv', sep = '\t', enconding = 'utf-8')
+images 
+
+# to extract correct rating_numerator and rating_denominator values from text column
+correct_rating = df_twitter_archive_enhanced_clean.text.str.extract('((?:\d+\.)?\d+)\/(\d+)', expand=True)
+df_twitter_archive_enhanced_clean['rating_numerator'] = correct_rating
+
+df_clean['rating_numerator']=df_clean.full_text.str.extract('(\d+)/(10)',expand=True)
+
+# to melt 'doggo', 'floofer', 'pupper', 'puppo' into one column with right values for each tweet id
+# first need to create a 'none' column and fill in with "1! when neither of the other categories are selected 
+tweeter_df['none_stage'] = 1 - (tweeter_df.doggo + tweeter_df.floofer + tweeter_df.pupper + tweeter_df.puppo)
+tweeter_df.none_stage.value_counts()
+# this will show some negative rows which need to be delted before melting 
+# OR perphas using 'mapping'. see the link below 
+# https://stackoverflow.com/questions/17114904/python-pandas-replacing-strings-in-dataframe-with-numbers
+
+# to extract the best predictions from each row in the image predictions, and then eventually add this as a new column 
+def predict_breed(row):
+  if row.p1_dog:
+    return row.p1
+  elif row.p2_dog:
+    return row.p2
+  elif row.p3_dog: 
+    return row.p3
+
+df['dog_breed'] = df.apply(lambda row: predict_breed(row), axis =1)
+
+# to extract dog names: use string patterns like 'This is*', 'Meet *', 'named *' > this will identify around 3-4 patterns
+#    then to use regex to get the words at * in code 
+
+# to drop duplicates the rows by unique ID
+df_master.drop_duplcates(subset="id", inplace=True)
+
+# dog stages must be extracted from the relative columns (puppo, doggo, pupper, floofer), then melted into one column 
+# first combine the names together like... 
+arc_clean['stage'] = arc_clean.doggo + arc_clean.floofer + arc_clean.pupper + arc_clean.puppo
+# And then we gather multiple dog stages.
+arc_clean.loc[arc_clean.stage == 'doggopupper', 'stage'] = 'doggo,pupper'
+arc_clean.loc[arc_clean.stage == 'doggopuppo', 'stage'] = 'doggo,puppo'
+arc_clean.loc[arc_clean.stage == 'doggofloofer', 'stage'] = 'doggo,floofer'
+# then run 'arc_clean.stage.value_counts()' to verify the wrok 
+# OR 
+# Handle multiple stages
+df.loc[df.stage == 'doggopupper', 'stage'] = 'doggo,pupper'
+df.loc[df.stage == 'doggopuppo', 'stage'] = 'doggo,puppo'
+df.loc[df.stage == 'doggofloofer', 'stage'] = 'doggo,floofer'
+# Handle missing values
+df.loc[df.stage == '', 'stage'] = np.nan
+
+# inappropriate entry for dog image prediction 
+# Once you have identified that there are indeed such problem, you may choose to either:
+# 1. Remove the rows: If the tweet itself is not appropriate for our analysis purposes, you could remove the row. 
+#     In this case, please also remove the rows with same Tweet ID in the other two datasets.
+# 2. Correct the values: If you know what these values should be i.e. if they have correct images, you may opt to correct these values.
+# 3. Set the values to None or empty text: Since correcting the rows manually may not be practical,
+#      and correcting the prediction values is not within the scope of this project, this is an acceptable practice too for this problem.
