@@ -152,3 +152,31 @@ df.loc[df.stage == '', 'stage'] = np.nan
 # 2. Correct the values: If you know what these values should be i.e. if they have correct images, you may opt to correct these values.
 # 3. Set the values to None or empty text: Since correcting the rows manually may not be practical,
 #      and correcting the prediction values is not within the scope of this project, this is an acceptable practice too for this problem.
+
+# to drop the rows th at don't have image sources (retweeted data) 
+twitter_archive_clean = twitter_archive_clean.dropna(subset=['expanded_urls'])
+# then check if this worked well 
+sum(twitter_archive_clean['expanded_urls'].isnull())
+
+# to remove unwanted columns
+# Update columns variable and drop columns related to retweets
+columns = ['retweeted_status_id', 'retweeted_status_user_id', 'retweeted_status_timestamp']
+twitter_archive_clean = twitter_archive_clean.drop(columns, axis=1)
+
+# How to drop rows from pandas data frame that contains a particular string in a particular column?
+df = pd.DataFrame(dict(A=[5,3,5,6], C=["foo","bar","fooXYZbar", "bat"]))
+
+In [92]: df
+Out[92]:
+   A          C
+0  5        foo
+1  3        bar
+2  5  fooXYZbar
+3  6        bat
+
+In [93]: df[~df.C.str.contains("XYZ")]
+Out[93]:
+   A    C
+0  5  foo
+1  3  bar
+3  6  bat
