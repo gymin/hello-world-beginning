@@ -183,3 +183,54 @@ Out[93]:
 
 # to sort value
 sort_values()
+
+
+# to drop multiple rows
+def main():
+    
+    # List of Tuples
+    students = [ ('jack', 34, 'Sydeny' , 'Australia') ,
+                 ('Riti', 30, 'Delhi' , 'India' ) ,
+                 ('Vikas', 31, 'Mumbai' , 'India' ) ,
+                 ('Neelu', 32, 'Bangalore' , 'India' ) ,
+                 ('John', 16, 'New York' , 'US') ,
+                 ('Mike', 17, 'las vegas' , 'US')  ]
+    
+    
+    #Create a DataFrame object
+    dfObj = pd.DataFrame(students, columns = ['Name' , 'Age', 'City' , 'Country'], index=['a', 'b', 'c' , 'd' , 'e' , 'f']) 
+    
+    print("Original Dataframe" , dfObj, sep='\n')
+    
+    print("**** Delete a single row by index label ****")
+   
+    # Delete row with index label 'b' 
+    modDfObj = dfObj.drop('b')
+    
+    print("New Dataframe" , modDfObj, sep='\n')
+    
+    print("**** Delete multiple rows by label names ****")
+ 
+    # Delete rows with index label a & b    
+    modDfObj = dfObj.drop(['a' , 'b'])
+    
+    print("**** Delete multiple rows by Index Position ****")
+    
+    # Delete row at index position 0 & 1
+    modDfObj = dfObj.drop([dfObj.index[0] , dfObj.index[1]])
+    
+    print("New Dataframe with Deleted Rows at Index position 0 and 1" , modDfObj, sep='\n')
+      
+    print("**** Delete multiple rows from dataFrame in Place")
+    
+    print("Original Dataframe" , dfObj, sep='\n')
+    
+    # Drop Colums a & b from dfObj in place
+    dfObj.drop(['a' , 'b'], inplace=True)
+    
+    print("Updated  Dataframe dfObj" , dfObj, sep='\n')
+    
+    
+    
+if __name__ == '__main__':
+    main()
