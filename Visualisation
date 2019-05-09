@@ -1,0 +1,49 @@
+# to create a histogram 
+Age    Counts
+   60     1204
+   45      700
+   21      400
+   .       .
+   .       .
+   34       56
+   10      150
+   
+   # the following shows the x axis with age and y axis with counts
+   patient_dets.set_index('PatientAge')['PatientAgecounts'].plot.bar()
+   
+   # to group age 
+   #helper df with min and max ages
+df1 = pd.DataFrame({'G':['14 yo and younger','15-19','20-24','25-29','30-34',
+                         '35-39','40-44','45-49','50-54','55-59','60-64','65+'], 
+                     'Min':[0, 15,20,25,30,35,40,45,50,55,60,65], 
+                     'Max':[14,19,24,29,34,39,44,49,54,59,64,120]})
+
+print (df1)
+                    G  Max  Min
+0   14 yo and younger   14    0
+1               15-19   19   15
+2               20-24   24   20
+3               25-29   29   25
+4               30-34   34   30
+5               35-39   39   35
+6               40-44   44   40
+7               45-49   49   45
+8               50-54   54   50
+9               55-59   59   55
+10              60-64   64   60
+11                65+  120   65
+
+cutoff = np.hstack([np.array(df1.Min[0]), df1.Max.values])
+labels = df1.G.values
+
+patient_dets['Groups'] = pd.cut(patient_dets.PatientAge, bins=cutoff, labels=labels, right=True, include_lowest=True)
+print (patient_dets)
+   PatientAge  PatientAgecounts             Groups
+0          60              1204              60-64
+1          45               700              45-49
+2          21               400              20-24
+3          34                56              30-34
+4          10               150  14 yo and younger
+
+patient_dets.groupby(['PatientAge','Groups'])['PatientAgecounts'].sum().plot.bar()
+# the above shows x axis with patient age group and y axis with counts 
