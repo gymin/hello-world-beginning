@@ -8,6 +8,10 @@
 ## Sie for quantitative data (e.g. value proportional to radius or area) 
 ## Color for qualitative and quantitative data 
 
+## Faceting for multivariate data
+
+........................................................................................................
+
 #1. Encoding via Shape 
 cat_markers = [['A', 'o'],   ## 'o': circular marker
                ['B', 's']]   ## 's': square marker 
@@ -187,3 +191,55 @@ plt.colorbar(label = 'CO2 (g/mi)')
 plt.xlabel('Displacement (l)')
 plt.ylabel('Combined Fuel Eff. (mpg)'); 
 
+....................................................................................................
+
+# Faceting for multivariate data 
+## FacetGrid can be used to subset your dataset across levels of a categorical variable, and then create one plot for each subset 
+
+g = sb.FacetGrid(data = df, col = 'cat_var1', size = 4)
+g.map(sb.boxplot, 'cat_var2', 'num_var2')
+## the oputput will show two separate box plots for cat_var1=a, and cat_var1=b, and x as cat_var2 and y as num_var2
+
+## If there are more varialbes (e.g. in cat_var2 = low, medicum, high / cat_var1 = a, b) 
+
+g = sb.FacetGrid(data = df, col = 'cat_var2', row = 'cat_var1', size = 2.5,
+                margin_titles = True)
+g.map(plt.scatter, 'num_var1', 'num_var2')
+## this will create a 6 scatter plots x as num_var1 and y as num_var2
+
+## example of fuel efficiency data 
+
+g = sb.FacetGrid(data = feul_econ, col = 'VClass', rows = 'trans_type', margine_titles = True)
+g.map(plt.scatter, 'displ', 'comb'); 
+
+...................................................................................................................
+
+# Other adaptation 
+## substituting count on a bar chart or histogram for the mean, median, or some other statistic of a second variable 
+## If we want to depict the mean of a thrid variable in a 2D histogram, we need to change the weights of points in the `hist2d` function
+
+xbin_edges = np.arange(0.25, df['num_var1'].max()+0.5, 0.5)
+ybin_edges = np.arange(7,    df['num_var2'].max()+0.5, 0.5)
+
+# count number of points in each bin
+xbin_idxs = pd.cut(df['num_var1'], xbin_edges, right = False,
+                    include_lowest = True, labels = False).astype(int)
+ybin_idxs = pd.cut(df['num_var2'], ybin_edges, right = False,
+                    include_lowest = True, labels = False).astype(int)
+
+pts_per_bin = df.groupby([xbin_idxs, ybin_idxs]).size()
+pts_per_bin = pts_per_bin.reset_index()
+pts_per_bin = pts_per_bin.pivot(index = 'num_var1', columns = 'num_var2').values
+
+z_wts = df['num_var3'] / pts_per_bin[xbin_idxs, ybin_idxs]
+
+# plot the data using the calculated weights
+plt.hist2d(data = df, x = 'num_var1', y = 'num_var2', weights = z_wts,
+           bins = [xbin_edges, ybin_edges], cmap = 'viridis_r', cmin = 0.5);
+plt.xlabel('num_var1')
+plt.ylabel('num_var2');
+plt.colorbar(label = 'mean(num_var3)');
+
+.....
+
+## 
