@@ -242,4 +242,85 @@ plt.colorbar(label = 'mean(num_var3)');
 
 .....
 
-## 
+## The heatmap if there is a lot of data to be aggregated 
+
+cat_means = df.groupby(['cat_var1', 'cat_var2']).mean()['num_var2']
+cat_means = cat_means.reset_index(name = 'num_var2_avg')
+cat_means = cat_means.pivot(index = 'cat_var2', columns = 'cat_var1',
+                            values = 'num_var2_avg')
+sb.heatmap(cat_means, annot = True, fmt = '.3f',
+           cbar_kws = {'label' : 'mean(num_var2)'})
+           
+## Clustered bar chart for 2 categorical variables and 1 numercial variable 
+
+ax = sb.barplot(data = df, x = 'cat_var1', y = 'num_var2', hue = 'cat_var2')
+ax.legend(loc = 8, ncol = 3, framealpha = 1, title = 'cat_var2')
+
+## 'Hue' parameter in the boxplot, volin plot, pointplot: 'dodge' parameter to shift the levels in a clustered fashion 
+
+ax = sb.pointplot(data = df, x = 'cat_var1', y = 'num_var2', hue = 'cat_var2',
+                  dodge = 0.3, linestyles = "")
+                  
+## Lineplot (frequency polygon)
+
+def mean_poly(x, y, bins = 10, **kwargs):
+    """ Custom adapted line plot code. """
+    # set bin edges if none or int specified
+    if type(bins) == int:
+        bins = np.linspace(x.min(), x.max(), bins+1)
+    bin_centers = (bin_edges[1:] + bin_edges[:-1]) / 2
+
+    # compute counts
+    data_bins = pd.cut(x, bins, right = False,
+                       include_lowest = True)
+    means = y.groupby(data_bins).mean()
+
+    # create plot
+    plt.errorbar(x = bin_centers, y = means, **kwargs)
+
+bin_edges = np.arange(0.25, df['num_var1'].max()+0.5, 0.5)
+g = sb.FacetGrid(data = df, hue = 'cat_var2', size = 5)
+g.map(mean_poly, "num_var1", "num_var2", bins = bin_edges)
+g.set_ylabels('mean(num_var2)')
+g.add_legend()
+
+.....................
+
+# Example of fuel efficiency (pointplot)
+
+sb.pointplot(data = fuel_econ, x = 'VClass', y = 'comb', hue = 'trans_type', 
+              ci = 'sd', linestyles = "", dodge = True); ## dodge to offset the two levels slightly 
+plt.xticks(rotation = 15)
+plt.ylabel('Avg.combined efficiency (mpg)'); 
+
+## bar plot 
+
+sb.barlot(data = fuel_econ, x = 'VClass', y = 'comb', hue = 'trans_type', 
+              ci = 'sd');
+plt.xticks(rotation = 15)
+plt.ylabel('Avg.combined efficiency (mpg)'); 
+
+## heat map 
+
+bins_x = np.arange(0.6, 7+0.3, 0.3)
+bins_y = np.arange(12, 58+3, 3)
+plt.hist2d(data = fuel_econ, x = 'displ', y = 'comb', cmin = 0.5, 
+           cmpa = 'virids_r', bins = [bins_x, bins_y], weights = co2_weights);
+plt.xlabel('Displacement (l)')
+plt.ylabel('Combined Fuel Eff. (mpg)');
+plt.colorbar(label = 'CO2 (g/mi)');
+
+# set et co2_weights
+
+disl_bins = pd.cut(fuel_econ['displ'], bins_x, right = False, 
+                   include_lowest = False, labels = False).astype9int)
+comb_bins = pd.cut(fuel_econ['comb'], bins_y, right = False, 
+                   include_lowest = False, labels = False).astype9int)
+
+n_points = fuel_econ.groupby([displ_bins, comb_bins]).size()
+n_points = n_points.reset_index().pivot(index = 'displ', columns = 'comb').values
+
+n_points 
+## this output will show a n array of values 
+
+co2_weights = fuel_econ['co2'] / n_points[displ_bins, comb_bins]
