@@ -9,6 +9,8 @@
 ## Color for qualitative and quantitative data 
 
 ## Faceting for multivariate data
+## Plot matrices 
+## Feature engineering 
 
 ........................................................................................................
 
@@ -324,3 +326,67 @@ n_points
 ## this output will show a n array of values 
 
 co2_weights = fuel_econ['co2'] / n_points[displ_bins, comb_bins]
+
+.................................................................................................
+
+# Plot matrices (each row and column represents a different variable, and a subplot against those variables generated in each plot matrix cell 
+
+## Seaborn's PairGrid 
+
+g = sb.PairGrid(data = df, vars = ['num_var1', 'num_var2', 'num_var3'])
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter
+
+### by default, PairGrid only expets to depict numeric variables
+### but if we want to look at the relationship between the numeric and categorical variables in the data, 
+###                we need to set the different variable types on the rows and columns, then use an appropriate plot type for all matrix cells 
+
+g = sb.PairGrid(data = df, x_vars = ['num_var1', 'num_var2', 'num_var3'],
+                y_vars = ['cat_var1','cat_var2'])
+g.map(sb.violinplot, inner = 'quartile')
+
+..............................
+
+## Correlation matrices (for numeric variables)
+
+sb.heatmap(df.corr(), annot = True, fmt = '.2f', cmap = 'vlag_r', center = 0)
+
+### instead of using the default swquential color map, a diverging color map is specified asnd its center is set to 0 (to see if it's postive or negative)
+
+...
+
+## Example of pokemon data (test six combat statistics for all pokemon)
+
+### first specify the variables of interest on the vars parameter (without this, it will plot all numerica variables in the dataset)
+pkmn_stats = ['hp', 'attack', 'defense', 'speed', 'special-attack', 'special-defense']
+g= sb.PairGrid(data = pokemon, vars = pkmn_stats);
+g= g.map_offdiag(plt.scatter); 
+g.map_diag(plt.hist);
+
+### check the correlation using a heatmap
+
+sb.hetmap(pokemon[pkmn_stats].corr(), cmap = 'rocket_r', annot = True, fmt = '.2f', vmin = 0); 
+
+...............................................................................................................................
+
+# Feature Engineering (creating a new variable with a sum, difference, product or ratio between 2 original variables) 
+
+## example of pokemon (biases of pokemon features)
+
+### first create new variables, 'attack ratio' and 'defense ratio'
+pokemon['atk_ratio'] = pokemon['attack'] / pokemon['special-attack']
+pokemon['def_ratio'] = pokemon['defense'] / pokemon['special-defense']
+
+plt.scatter(data = pokemon, x = 'atk_ratio', y = 'def_ratio', alpha = 1/23
+plt.xlabel('Offensive Bias (Phys/Spec)')
+plt.ylable('Defensive Bias (Phys/Spec)');
+plt.xscale('log')
+plt.yscale('log'); 
+tick_loc = [0.25, 0.5, 1, 2, 4]
+plt.xticks(tick_loc, tick_loc)
+plt.yticks(tick_loc, tick_loc); 
+plt.xlim(2 ** -2.5, 2 ** 2.5)
+plt.ylim(2 ** -2.5, 2 ** 2.5); 
+
+
+
