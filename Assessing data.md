@@ -31,14 +31,21 @@ To show a random sample (e.g. .sample(5) = 5 samples)
 .sample(number)
 ```
 to find duplicated entries (but this will show all actual examples of duplicated)
+```
 df[df.address.duplicated()]
-# to show the value in order (e.g. weight from light to heavy)
+```
+To show the value in order (e.g. weight from light to heavy)
+```
 df.weight.sort_values()
-# to show if there is any missing data in Auralin 
+```
+To show if there is any missing data in Auralin 
+```
 sum(df.auralin.isnull())
-# to find a sepecfic entry (e.g. surname = 'Zaitseva')
+```
+To find a sepecfic entry (e.g. surname = 'Zaitseva')
+```
 df[df.surname == 'Zaitseva']
-
+```
 # imagine there are three datasets (patients, treatements, adverse_reactions), but we want to remove duplicated headings 
 # to create a list of all of the column names across the whole dataset, all three tables worth
 all_columns = pd.Series(list(patients) + list(treatement) = list(adverse_reactions))
