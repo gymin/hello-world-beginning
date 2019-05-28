@@ -1,27 +1,46 @@
-# Creating a bar chart 
+# Creating a bar chart using an example of Pokemon data 
+_background preparation_
+```
 import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
 import seaborn as sb 
 %matplotlib inline
-
+```
+_read the dataset 
+```
 pokemon = pd.read_csv('pokemon.csv')
 print(pokemon.shape)
 pokemon.head(10)
-## output: (807, 14) and table with id, identifier, generation_id, height, weight, base_experience, type_1, type_2, etc. 
-## create a bar chart 
-sb.countplot(data = pokemon, x = 'generation_id'); 
-## ouptupt will show the x as generation_id and y as count with different colours 
-sb.color_palette()
-## to show all colour used in the table (returns a list of RGB tuples. Each tuple consists of 3 digits specifying the red, green and blue values)
-base_color = sb.color_palette()[0] ## this will set one colour (in this case the first row of the sb.color_palette(): blue) as a base color
-## then we specify the color in the 'countplot' above 
-sb.countplot(data = pokemon, x = 'generation_id', color = base_color, order = gen_order);
-## but what if we want to show a bar chart that has the highest frequency to lowest?
-# first we write a code to obtain that order programmatically 
-gen_order = pokemon['genration_id'].value_counts().index ## this will set the values in descending orde: refer back to the code in row 19
+```
+> Output: (807, 14) and table with id, identifier, generation_id, height, weight, base_experience, type_1, type_2, etc. 
 
-## based on pokemon type?
+## create a bar chart based on `generation_id`
+```
+sb.countplot(data = pokemon, x = 'generation_id'); 
+```
+> ouptupt will show the x as generation_id and y as count with different colours 
+```
+sb.color_palette()
+```
+To show all colour used in the table (returns a list of RGB tuples. Each tuple consists of 3 digits specifying the red, green and blue values)
+```
+base_color = sb.color_palette()[0]
+```
+> this will set one colour (in this case the first row of the sb.color_palette(): blue) as a base color
+
+Then we specify the color in the 'countplot' above 
+```
+sb.countplot(data = pokemon, x = 'generation_id', color = base_color, order = gen_order);
+```
+But what if we want to show a bar chart that has the highest frequency to lowest?
+* First we write a code to obtain that order programmatically 
+```
+gen_order = pokemon['genration_id'].value_counts().index 
+```
+> This will set the values in descending orde: refer back to the code in row 19
+
+## Based on pokemon type?
 type_order = pokemon['type_1'.value_counts().index 
 sb.countplot(data = pokemon, x = 'type_1', color = base_color); 
 plt.xticks(rotation = 90); ## this will rotate the category name of 'type 1' to vertical, so that all names are visible 
