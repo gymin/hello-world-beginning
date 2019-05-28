@@ -1,15 +1,17 @@
-### To assess the data about Auralin (Oral Insulin) and Novodra: Fabricated Crinical trial data, AND to create a trustworthy dataset 
-## Dirty data (= low quality data): Content issue (e.g. inaccurate, corrupted, duplicated data)
-## Messy data (= untidy data): Structural issu (e.g. tidy data: each variable forms a column, each observation forms a row, each observational unit forms a table)
+# To assess the data about Auralin (Oral Insulin) and Novodra: Fabricated Crinical trial data, AND to create a trustworthy dataset 
+* Dirty data (= low quality data): Content issue (e.g. inaccurate, corrupted, duplicated data)
+* Messy data (= untidy data): Structural issu (e.g. tidy data: each variable forms a column, each observation forms a row, each observational unit forms a table)
+
 ## Types of assessment = visual (e.g. google sheet) vs programmatic (e.g. df.info())
+* visual assessment = just check tables (better to use spreadsheet programms, but it might crash if the file is too large) 
+* programmatic assessment = assessing using codes 
 
-## visual assessment = just check tables (better to use spreadsheet programms, but it might crash if the file is too large) 
+> to show the summary (good to check the datatype, esp. ones that need calculation or summary)
+```.info()``` 
 
-## programmatic assessment = assessing using codes 
-# to show the summary (good to check the datatype, esp. ones that need calculation or summary)
-.info() 
-# to show NaN (missing values) - but this might not pick up the correct NaN if a non-numerical value is recorded (e.g. /, NA, -)
-df[df['address'].isnull()] 
+> to show NaN (missing values) - but this might not pick up the correct NaN if a non-numerical value is recorded (e.g. /, NA, -)
+```df[df['address'].isnull()]```
+
 # 'object' as a result of .info() shows that they are string, which can't perform any numerical calcuations 
 # to show a numerical summary (e.g. count, mean, std, min, max, quartiles)
 .describe()
