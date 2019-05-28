@@ -20,17 +20,15 @@ To show NaN (missing values) - but this might not pick up the correct NaN if a n
 ```
 df[df['address'].isnull()]
 ```
-
 To show a numerical summary (e.g. count, mean, std, min, max, quartiles)
 ```
 .describe()
 ```
-
 To show a random sample (e.g. .sample(5) = 5 samples)
 ```
 .sample(number)
 ```
-to find duplicated entries (but this will show all actual examples of duplicated)
+To find duplicated entries (but this will show all actual examples of duplicated)
 ```
 df[df.address.duplicated()]
 ```
@@ -46,10 +44,16 @@ To find a sepecfic entry (e.g. surname = 'Zaitseva')
 ```
 df[df.surname == 'Zaitseva']
 ```
-# imagine there are three datasets (patients, treatements, adverse_reactions), but we want to remove duplicated headings 
-# to create a list of all of the column names across the whole dataset, all three tables worth
+### imagine there are three datasets (patients, treatements, adverse_reactions), but we want to remove duplicated headings 
+To create a list of all of the column names across the whole dataset, all three tables worth
+```
 all_columns = pd.Series(list(patients) + list(treatement) = list(adverse_reactions))
-# then to see how many headings are duplicated
+```
+Then to see how many headings are duplicated
+```
 all_columns[all_columns.duplicated()]
-# to show a list of all of the columns in one data frame (e.g. patients)
+```
+To show a list of all of the columns in one data frame (e.g. patients)
+```
 list(patients)
+```
