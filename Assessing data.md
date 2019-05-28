@@ -10,17 +10,18 @@
 
 ## Summary of key codes useful for assessment 
 
-to show the summary (good to check the datatype, esp. ones that need calculation or summary)
+To show the summary (good to check the datatype, esp. ones that need calculation or summary)
 ```
-.info()``` 
+.info()
+``` 
 >'object' as a result of `.info()` shows that they are string, which can't perform any numerical calcuations 
 
-to show NaN (missing values) - but this might not pick up the correct NaN if a non-numerical value is recorded (e.g. /, NA, -)
+To show NaN (missing values) - but this might not pick up the correct NaN if a non-numerical value is recorded (e.g. /, NA, -)
+```
+df[df['address'].isnull()]
+```
 
-```df[df['address'].isnull()]```
-
-
-# to show a numerical summary (e.g. count, mean, std, min, max, quartiles)
+To show a numerical summary (e.g. count, mean, std, min, max, quartiles)
 .describe()
 # to show a random sample (e.g. .sample(5) = 5 samples)
 .sample(number)
