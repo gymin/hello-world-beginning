@@ -22,10 +22,15 @@ df[df['address'].isnull()]
 ```
 
 To show a numerical summary (e.g. count, mean, std, min, max, quartiles)
+```
 .describe()
-# to show a random sample (e.g. .sample(5) = 5 samples)
+```
+
+To show a random sample (e.g. .sample(5) = 5 samples)
+```
 .sample(number)
-# to find duplicated entries (but this will show all actual examples of duplicated)
+```
+to find duplicated entries (but this will show all actual examples of duplicated)
 df[df.address.duplicated()]
 # to show the value in order (e.g. weight from light to heavy)
 df.weight.sort_values()
