@@ -22,7 +22,7 @@ fuel_econ.head(6)
 
 ...............................................................................................
 
-#1. Scatterplots for quantiativate vs quantitative variables 
+## 1. Scatterplots for quantiativate vs quantitative variables 
 
 ```
 plt.scatter(data = df, x = 'num_var1', y = 'num_var1')
@@ -88,7 +88,7 @@ But still the regression line doesn't change. We may wish to compare the data by
 
 ..........
 
-#2. Heat Maps: a 2d version of the histogram that can be used as an alternative to a scatter plot (height doesn't matter, but the color) - the bin size matters 
+## 2. Heat Maps: a 2d version of the histogram that can be used as an alternative to a scatter plot (height doesn't matter, but the color) - the bin size matters 
 
 *Example of fuel efficiency*
 ```
@@ -144,8 +144,8 @@ for i in range(counts.shape[0]):
 ```                    
 ............................................................................................        
 
-#3. Violine plots for quantitative vs qualitative variables: smooth histogram
-##  (for each level of the categorical variable, a distribution of the values on the numeric variable is plotted)
+## 3. Violine plots for quantitative vs qualitative variables: smooth histogram
+- For each level of the categorical variable, a distribution of the values on the numeric variable is plotted
 
 *Fuel efficiency example*
 
@@ -169,7 +169,7 @@ OR, add quarlite point inside of the violin
 sb.violinplot(data = fuel_econ, x = 'VClass', y = 'comb', color = base_color, inner = 'quartile'); 
 ```
 
-#4. Box plot (quants. vs. qual.)
+## 4. Box plot (quants. vs. qual.)
 - Compute descriptive statistics within each level and depict them graphically using a box and whiskers
 - The centre of the box = media, upper and lower edges = Low and uppoer quartiles 
 - Whiskers top and bottom = Max and Min value (maximum whisker length = 1.5 * IQR (Q3-Q1))
@@ -180,7 +180,7 @@ sb.violinplot(data = fuel_econ, x = 'VClass', y = 'comb', color = base_color, in
 sb.boxplot(data = fuel_econ, x = 'VClass', y = 'comb', color = base_color);
 ```
 
-#5. Swan plot (quants vs. qual)
+## 5. Swan plot (quants vs. qual)
 - Similar to a scatterplot, each data point is plotted with position according to its value on the two variables being plotted
 - Useful if we have a small or moderate amout of data 
 
@@ -203,7 +203,7 @@ sb.swarmplot(data = df, x = 'cat_var', y = 'num_var', color = base_color)
 plt.ylim(ax1.get_ylim()) # set y-axis limits to be same as left plot
 ```
 
-#6. Clustered bar charts for qualitative vs qualitative (e.g. multiple bar chart)
+## 6. Clustered bar charts for qualitative vs qualitative (e.g. multiple bar chart)
 
 *Example of fuel efficiency: vehicle class (automatic/manual: 'trans') vs. type of vehicle transmission*
 
@@ -237,7 +237,7 @@ ax = sb.countplot(data = df, x = 'cat_var1', hue = 'cat_var2')
 ax.legend(loc = 8, ncol = 3, framealpha = 1, title = 'cat_var2')
 ```
 
-#7. Stacked bar charts 
+## 7. Stacked bar charts 
 Pre-processing: count and sort by the number of instances of each category
 
 ```
@@ -263,7 +263,7 @@ plt.legend(sorted_counts.index)  # add a legend for labeling
 plt.ylim([0,2]) # give some vertical spacing around the bar
 ```
 
-## Stacked bar charts (comparison between stacked bar charts and multiple bar charts)
+### Stacked bar charts (comparison between stacked bar charts and multiple bar charts)
 
 ```
 cat1_order = ['East', 'South', 'West', 'North']
@@ -295,7 +295,7 @@ plt.xticks(np.arange(len(cat1_order)), cat1_order)
 plt.legend(cat2_order)
 ```
 
-## Compound bar charts (stacked bar charts based on %)
+### Compound bar charts (stacked bar charts based on %)
 
 ```
 cat1_order = ['East', 'South', 'West', 'North']
@@ -323,7 +323,8 @@ plt.legend(reversed(artists), reversed(cat2_order), framealpha = 1,
            bbox_to_anchor = (1, 0.5), loc = 6);
 ```
            
-#7. Faceted plot (Faceting): dat is divided into disjoint subsets, most often by different levels of a caegorical variable (creating multiple histograms per value)
+## 8. Faceted plot (Faceting)
+- Data is divided into disjoint subsets, most often by different levels of a caegorical variable (creating multiple histograms per value)
 
 ```
 g = sb.FacetGrid(data = fuel_econ, col = 'VClass'); 
@@ -347,7 +348,7 @@ g.map(plt.hist, 'num_var', bins = np.arange(5, 15+1, 1))
 g.set_titles('{col_name}')
 ```
 
-#8. Adapted bar charts (instead of Box Plot) 
+## 9. Adapted bar charts (instead of Box Plot) 
 
 ```
 base_color = sb.color_palette()[0]
@@ -362,7 +363,7 @@ If we want to show the line graph that connects the mean point, and a vertical l
 sb.pointplot(data = fuel_econ, x = 'VClass', y = 'comb', ci = 'sd', linestyles = "") ## linestyle is empty: it will only show a vertical line 
 ```
 
-#9. Adapted histograms 
+## 10. Adapted histograms 
 If we want to change the 'weights' parameter (instead of each data point given a weight of 1) 
 
 ```
@@ -386,10 +387,10 @@ As part of this computation, we make use of pandas' cut function in order to ass
 The `labels = False` parameter means that each point's bin membership is associated by a numeric index, rather than a string. 
 We use these numeric indices into the pts_per_bin, with the .values at the end necessary in order for the Series' indices to not be confused between the indices of df['binary_out'].
 
-#10. Line plots 
+## 11. Line plots 
 - Useful if we want relative change of the values, and trends across x-values 
 
-## Examples: Time Series Plot 
+### Examples: Time Series Plot 
 (e.g. pointplot: useful if we are dealing with qualitative vs. quantitative, Line plots: useful for two quants. variables)
 
 ```
@@ -439,7 +440,7 @@ plt.xlabel('num_var1')
 plt.ylabel('num_var2')
 ```
 
-#11. Alternate variations: Rolling 
+## 12. Alternate variations: Rolling 
 Instead of computing summary statistics on fixed bins, make computations on a rolling window through use of pandas' `rolling` method, making computations on sequential rows of the dataframe, by using 'sort_values' to put the x values in ascending order first 
 
 ```
@@ -464,7 +465,7 @@ plt.ylabel('num_var2')
 
 > This will create multiple line plots (3 plots, median, Q1 and Q2)
 
-#12. Alternate variations: FacetGrid 
+## 13. Alternate variations: FacetGrid 
 - Multiple hist calls, but with lines only 
 
 ```
@@ -498,10 +499,10 @@ g.map(freq_poly, "num_var", bins = bin_edges)
 g.add_legend()
 ```
 
-#13. Ridgeline plots: a series of vertically faceted line plots or density curves, but with somewhat overlapping y-axes
+## 14. Ridgeline plots: a series of vertically faceted line plots or density curves, but with somewhat overlapping y-axes
 - Faceting but instead of a histogram, it's with line plots 
 
-## Faceting 
+### Faceting 
 
 ```
 group_means = df.groupby(['many_cat_var']).mean()
@@ -513,7 +514,7 @@ g.map(plt.hist, 'num_var', bins = np.arange(5, 15+1, 1))
 g.set_titles('{col_name}')
 ```
 
-## Ridgeline 
+### Ridgeline 
 
 ```
 group_means = df.groupby(['many_cat_var']).mean()
@@ -525,7 +526,7 @@ g.map(sb.kdeplot, 'num_var', shade = True)
 g.set_titles('{row_name}')
 ```
 
-## Stacking ridgeline for a uni-dimensional comparison 
+### Stacking ridgeline for a uni-dimensional comparison 
 
 ```
 group_means = df.groupby(['many_cat_var']).mean()
@@ -567,7 +568,7 @@ g.set_xlabels('num_var')
 g.set_titles('')
 ```
 
-#14. Q-Q plots (Quantile-Quantile plot)
+## 15. Q-Q plots (Quantile-Quantile plot)
 - To see how closely your numeric data follows some hypothetical distribution. 
 - This might be important for certain parametric statistical tests, like checking for assumptions of normality.
 - To make a visual comparison between your data and your reference distribution.
@@ -635,9 +636,9 @@ plt.xlabel('Expected Standard Scores')
 plt.ylabel('Observed Standard Scores')
 ```
 
-#15. Extra plots 
+## 16. Extra plots 
 
-## Rug plot: all of the data points are plotted on a single axis, one tick mark or line for each one.
+### Rug plot: all of the data points are plotted on a single axis, one tick mark or line for each one.
 
 ```
 g = sb.JointGrid(data = df, x = 'num_var1', y = 'num_var2')
@@ -645,7 +646,7 @@ g.plot_joint(plt.scatter)
 g.plot_marginals(sb.rugplot, height = 0.25)  ## height = height of rug ticks 
 ```
 
-## Strip plot: similar to swan plot, but without any dodging or jittering to keep points separate or off the categorical line
+### Strip plot: similar to swan plot, but without any dodging or jittering to keep points separate or off the categorical line
 - A rug plot faceted by categorical levels
 
 ```
