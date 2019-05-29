@@ -1,10 +1,10 @@
 # Bivariate visualisations
-#1. Scatter plot: Quants vs Quants
-#2. Clustered bar charts: Qual vs Qual
-#3. Heat maps: 2D histograms or bar charts 
-#4. Violin and Box plots: 1 Quant vs 1 Qual
-#5. Faceting:to adapt univariate plots to bivariate data 
-#6. Line plots 
+1. Scatter plot: Quants vs Quants
+2. Clustered bar charts: Qual vs Qual
+3. Heat maps: 2D histograms or bar charts 
+4. Violin and Box plots: 1 Quant vs 1 Qual
+5. Faceting:to adapt univariate plots to bivariate data 
+6. Line plots 
 ```
 import numpy as np 
 import pandas as pd
