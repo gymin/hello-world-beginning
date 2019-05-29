@@ -1,35 +1,51 @@
-### aim: to clean data (trial data on oral insulin - three datasets provided: 'patients', 'treatments', and 'adverse_reactions'
+# Aim: to clean data (trial data on oral insulin - three datasets provided: 'patients', 'treatments', and 'adverse_reactions'
 
 ## Step 1: Make a copy of each piece of data so that later can view the original dirty and/or messy dataset
+```
 df_clean = df.copy()
-
+```
 ## Step 2: Find Missing data (completeness) first 
-# 'treatments' table
-# - missing HbA1c changes
-# - missing records (280 instead of 350)
-# 'patients' table 
-# - missing demographic information (address-contact columns) (but this might be difficult to solve)
 
-# to tackle 'missing records'
-# if there is an extra file that stores missing records (e.g. 'treatements_cut.csv'), 
-# define: to concartenate two files 
+**`treatments` table**
+- missing HbA1c changes
+- missing records (280 instead of 350)
+
+**`patients` table** 
+- missing demographic information (address-contact columns) (but this might be difficult to solve)
+
+### To tackle 'missing records'
+If there is an extra file that stores missing records (e.g. 'treatements_cut.csv'), 
+
+- *Define*: to concartenate two files 
+```
 treatments_cut = pd.read_csv('treatments_cut.csv')
 treatments_clean = pd.concat('treatements_clean, treatements_cut], ignore_index=True)
-# test (to see if there are total 350 rows)
+```
+
+- _Test_: to see if there are total 350 rows
+```
 treatments_clean.head()
 treatments_clean.tail()
+```
 
-# to tackle 'missing HbA1c change' 
-# define: recalculate the 'bha1c_change' column: hba1c_start - hba1c_end
+### To tackle 'missing HbA1c change' 
+
+- _Define_: recalculate the `bha1c_change` column: `hba1c_start - hba1c_end`
+```
 treatments_clean.hba1c_change = (treatements_clean.hba1c_start - tratements_clean.hba1c_end)
-# test 
+```
+
+- _Test_
+```
 treatments_clean.hba1c_change.head()
+```
 
 ## Step 3: check 'Tidiness' (because once it's tidy, it's easy to manupulate - fix the structural issue)
-# 'patients' table 
-# - contact column should be split into phone number and email 
-# - given name and surname columns duplicated in 'treatments' and 'adverse_reactions' tables 
-# 'treatments' table 
+
+**`patients` table** 
+- contact column should be split into phone number and email 
+- given name and surname columns duplicated in 'treatments' and 'adverse_reactions' tables 
+**`treatments` table** 
 # - three variables in two columns (treatment, start dose and end dose) 
 # - adverse reaction should be part of the 'treatments' table 
 
