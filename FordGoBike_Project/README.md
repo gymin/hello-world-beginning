@@ -1,5 +1,7 @@
 # Ford GoBike Data Exploration
 
+This is part of Udacity Data Analyst Nanodegree program 
+
 ## Dataset
 
 The data consists of information regarding Ford GoBike bike sharing system until April 2019. 
